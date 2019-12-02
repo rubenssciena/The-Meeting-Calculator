@@ -25,7 +25,7 @@ class Team extends Component {
         onLongPress={this.selectItem}>
         <Text style={[styles.itemTeam, {fontWeight: 'bold'}]}>{name}</Text>
         {this.state.checked ? (
-          <Icon name="done" size={30} style={styles.icon} />
+          <Icon name="done" size={25} style={styles.icon} />
         ) : null}
         <Text style={styles.cost}>{cost}</Text>
       </TouchableOpacity>
@@ -38,7 +38,7 @@ export default withNavigation(Team);
 const styles = StyleSheet.create({
   containerTeam: {
     flexDirection: 'row',
-    height: 50,
+    height: 45,
     backgroundColor: colors.white,
     justifyContent: 'space-between',
     alignItems: 'center',

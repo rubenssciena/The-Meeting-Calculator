@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, AsyncStorage} from 'react-native';
+import {StyleSheet, View, Text, AsyncStorage, FlatList} from 'react-native';
 import {colors, metrics} from '../../styles';
 import Header from '../../components/header';
 
@@ -10,17 +10,71 @@ export default class detail extends Component {
     super(props);
     this.state = {
       meetingKey: '',
+      refreshing: false,
       members: [
-        {id: 1, name: 'Mauris dictum ligula'},
-        {id: 2, name: 'Sed et lorem sed augue'},
-        {id: 3, name: 'Nam neque eu posuere'},
-        {id: 4, name: 'Quisque massa egestas'},
-        {id: 5, name: 'Duis quis sapien semper'},
-        {id: 6, name: 'Facilisis dictum at non risus'},
-        {id: 7, name: 'Sed vitae tellus'},
+        {
+          id: 0,
+          name: 'Rubens Sciena',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 1,
+          name: 'Ângela Bot',
+          cost: 'R$ 125,00/h',
+        },
+        {
+          id: 2,
+          name: 'Alessandro Solyom',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 3,
+          name: 'Adilson Ribas',
+          cost: 'R$ 95,00/h',
+        },
+        {
+          id: 4,
+          name: 'Rebeca Tobias',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 5,
+          name: 'Rubens Sciena',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 6,
+          name: 'Ângela Bot',
+          cost: 'R$ 125,00/h',
+        },
       ],
     };
   }
+
+  renderList = ({item}) => (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#eee',
+        marginBottom: 2,
+        marginLeft: 10,
+        marginRight: 10,
+        borderRadius: metrics.baseRadius,
+      }}>
+      <Text key={item.id} style={[styles.member, {fontWeight: 'bold'}]}>
+        {item.name}
+      </Text>
+      <Text style={styles.member}>{item.cost}</Text>
+    </View>
+  );
+
+  loadMembers = () => {
+    this.setState({refreshing: true});
+    this.setState({members: this.state.members});
+    this.setState({refreshing: false});
+  };
 
   // getAsyncStorage = async () => {
   //   this.setState({
@@ -30,10 +84,12 @@ export default class detail extends Component {
   // };
 
   render() {
+    const {members, refreshing} = this.state;
+
     return (
       <View style={styles.container}>
         <Header
-          title={this.state.meetingKey} //"Meeting Details"
+          title="Meeting Details"
           backIcon={true}
           backPage="welcome"
           shareIcon
@@ -49,11 +105,14 @@ export default class detail extends Component {
               Reunião Gerencial - DTI
             </Text>
           </View>
-          {this.state.members.map(item => (
-            <Text key={item.id} style={styles.member}>
-              {item.name}
-            </Text>
-          ))}
+
+          <FlatList
+            data={members}
+            keyExtractor={item => String(item.id)}
+            renderItem={this.renderList}
+            onRefresh={this.loadMembers}
+            refreshing={refreshing}
+          />
         </View>
         <View>
           <View>
@@ -63,7 +122,7 @@ export default class detail extends Component {
           <View style={{flexDirection: 'row', marginBottom: 10}}>
             <View style={{flex: 2}}>
               <Text style={styles.titleData}>Duration</Text>
-              <Text style={styles.textData}>02:23</Text>
+              <Text style={styles.textData}>02:23:33</Text>
             </View>
             <View style={{flex: 3}}>
               <Text style={styles.titleData}>Cost</Text>
@@ -83,6 +142,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
   },
+  scrollview: {
+    flex: 1,
+  },
 
   title: {
     fontSize: 18,
@@ -98,12 +160,11 @@ const styles = StyleSheet.create({
     color: '#434343',
   },
   member: {
-    backgroundColor: '#E8F0FE',
-    marginLeft: 10,
-    marginRight: 10,
+    backgroundColor: '#eee',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 5,
-    paddingBottom: 3,
+    paddingBottom: 5,
     fontSize: 16,
     color: 'black',
   },
