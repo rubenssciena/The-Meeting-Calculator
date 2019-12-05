@@ -125,7 +125,7 @@ export default class meeting extends Component {
 
     return (
       <View style={styles.container}>
-        <Header title="Meeting" backIcon={true} backPage="welcome" shareIcon />
+        <Header title="Meeting" backIcon={true} backPage="welcome" />
         <View style={{flex: 1}}>
           <Text style={styles.titleData}>Title</Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
