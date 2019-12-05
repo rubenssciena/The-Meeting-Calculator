@@ -1,3 +1,6 @@
+//
+// MEETING PLAYING
+//
 import React, {Component} from 'react';
 import {
   StyleSheet,
@@ -5,6 +8,7 @@ import {
   Text,
   AsyncStorage,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {colors, metrics} from '../../styles';
@@ -13,20 +17,52 @@ import Header from '../../components/header';
 const meetingKey = '';
 
 export default class meeting extends Component {
-  state = {
-    meetingKey: '',
-    playing: false,
-    started: false,
-    members: [
-      {id: 1, name: 'Mauris dictum ligula'},
-      {id: 2, name: 'Sed et lorem sed augue'},
-      {id: 3, name: 'Nam neque eu posuere'},
-      {id: 4, name: 'Quisque massa egestas'},
-      {id: 5, name: 'Duis quis sapien semper'},
-      {id: 6, name: 'Facilisis dictum at non risus'},
-      {id: 7, name: 'Sed vitae tellus'},
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      meetingKey: '',
+      refreshing: false,
+      playing: false,
+      started: false,
+      members: [
+        {
+          id: 0,
+          name: 'Rubens Sciena',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 1,
+          name: 'Ângela Bot',
+          cost: 'R$ 125,00/h',
+        },
+        {
+          id: 2,
+          name: 'Alessandro Solyom',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 3,
+          name: 'Adilson Ribas',
+          cost: 'R$ 95,00/h',
+        },
+        {
+          id: 4,
+          name: 'Rebeca Tobias',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 5,
+          name: 'Rubens Sciena',
+          cost: 'R$ 85,00/h',
+        },
+        {
+          id: 6,
+          name: 'Ângela Bot',
+          cost: 'R$ 125,00/h',
+        },
+      ],
+    };
+  }
 
   // componentWillMount = async () => {
   //   this.setState({
@@ -45,7 +81,35 @@ export default class meeting extends Component {
     this.setState({playing: false, started: false});
   };
 
+  renderList({item}) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#eee',
+          marginBottom: 2,
+          marginLeft: 10,
+          marginRight: 10,
+        }}>
+        <Text key={item.id} style={[styles.member, {fontWeight: 'bold'}]}>
+          {item.name}
+        </Text>
+        <Text style={styles.member}>{item.cost}</Text>
+      </View>
+    );
+  }
+
+  loadMembers = () => {
+    this.setState({refreshing: true});
+    this.setState({members: this.state.members});
+    this.setState({refreshing: false});
+  };
+
   render() {
+    const {members, refreshing} = this.state;
+
     let iconPlay = [styles.icon];
     if (this.state.playing) {
       iconPlay.push(styles.iconDisabled);
@@ -63,21 +127,20 @@ export default class meeting extends Component {
       <View style={styles.container}>
         <Header title="Meeting" backIcon={true} backPage="welcome" shareIcon />
         <View style={{flex: 1}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={[styles.title, {flex: 1}]}>
+          <Text style={styles.titleData}>Title</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[styles.textData, {flex: 1}]}>
               Reunião Gerencial - DTI
             </Text>
           </View>
-          {this.state.members.map(item => (
-            <Text key={item.id} style={styles.member}>
-              {item.name}
-            </Text>
-          ))}
+          <Text style={styles.titleData}>Members</Text>
+          <FlatList
+            data={members}
+            keyExtractor={item => String(item.id)}
+            renderItem={this.renderList}
+            onRefresh={this.loadMembers}
+            refreshing={refreshing}
+          />
         </View>
         <View>
           <View style={{flexDirection: 'row'}}>
@@ -110,7 +173,7 @@ export default class meeting extends Component {
             </View>
             <View style={{flex: 3}}>
               <Text style={styles.titleData}>Cost</Text>
-              <Text style={[styles.textData, {borderColor: '#ff0000'}]}>
+              <Text style={[styles.textCost, {borderColor: '#00ff00'}]}>
                 R$ 0,00
               </Text>
             </View>
@@ -130,7 +193,7 @@ const styles = StyleSheet.create({
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   icon: {
     color: '#019AE8',
@@ -138,41 +201,40 @@ const styles = StyleSheet.create({
   iconDisabled: {
     opacity: 0.3,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingTop: metrics.baseMargin,
-    paddingLeft: 10,
-    paddingBottom: 10,
-    marginTop: 10,
-    margin: metrics.baseMargin,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#eee',
-    color: '#434343',
-  },
   member: {
-    backgroundColor: '#E8F0FE',
-    marginLeft: 10,
-    marginRight: 10,
+    backgroundColor: '#eee',
     paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 5,
-    paddingBottom: 3,
+    paddingBottom: 5,
     fontSize: 16,
     color: 'black',
   },
   titleData: {
     marginLeft: 10,
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#019AE8',
+  },
+  textCost: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingTop: 4,
+    paddingLeft: 10,
+    paddingBottom: 2,
+    marginLeft: 10,
+    marginRight: 10,
+    borderWidth: 1,
+    backgroundColor: '#eee',
+    color: '#434343',
   },
   textData: {
     fontSize: 16,
     fontWeight: 'bold',
-    paddingTop: metrics.baseMargin,
+    paddingTop: 5,
     paddingLeft: 10,
-    paddingBottom: 10,
+    paddingBottom: 5,
     marginLeft: 10,
     marginRight: 10,
     borderBottomWidth: 1,

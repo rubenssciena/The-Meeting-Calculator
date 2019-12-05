@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'left',
     color: '#019AE8',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     paddingTop: metrics.baseMargin * 2,
     marginLeft: metrics.baseMargin,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   label: {
     textAlign: 'left',
     color: '#019AE8',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
     marginLeft: metrics.baseMargin,
@@ -197,9 +197,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     paddingLeft: 10,
-    marginBottom: 20,
-    paddingTop: 5,
-    paddingBottom: 7,
+    marginBottom: 15,
+    paddingTop: 3,
+    paddingBottom: 3,
     fontSize: 16,
   },
 

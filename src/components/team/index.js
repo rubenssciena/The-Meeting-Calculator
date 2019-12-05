@@ -38,7 +38,7 @@ export default withNavigation(Team);
 const styles = StyleSheet.create({
   containerTeam: {
     flexDirection: 'row',
-    height: 45,
+    height: 40,
     backgroundColor: colors.white,
     justifyContent: 'space-between',
     alignItems: 'center',

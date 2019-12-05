@@ -1,3 +1,6 @@
+//
+// MEETING DETAILS
+//
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, AsyncStorage, FlatList} from 'react-native';
 import {colors, metrics} from '../../styles';
@@ -51,37 +54,31 @@ export default class detail extends Component {
     };
   }
 
-  renderList = ({item}) => (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: '#eee',
-        marginBottom: 2,
-        marginLeft: 10,
-        marginRight: 10,
-        borderRadius: metrics.baseRadius,
-      }}>
-      <Text key={item.id} style={[styles.member, {fontWeight: 'bold'}]}>
-        {item.name}
-      </Text>
-      <Text style={styles.member}>{item.cost}</Text>
-    </View>
-  );
+  renderList({item}) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#eee',
+          marginBottom: 2,
+          marginLeft: 10,
+          marginRight: 10,
+        }}>
+        <Text key={item.id} style={[styles.member, {fontWeight: 'bold'}]}>
+          {item.name}
+        </Text>
+        <Text style={styles.member}>{item.cost}</Text>
+      </View>
+    );
+  }
 
   loadMembers = () => {
     this.setState({refreshing: true});
     this.setState({members: this.state.members});
     this.setState({refreshing: false});
   };
-
-  // getAsyncStorage = async () => {
-  //   this.setState({
-  //     meetingKey: await AsyncStorage.getItem('@fmc:meetingkey'),
-  //   });
-  //   alert(this.state.meetingKey);
-  // };
 
   render() {
     const {members, refreshing} = this.state;
@@ -95,17 +92,13 @@ export default class detail extends Component {
           shareIcon
         />
         <View style={{flex: 1}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={[styles.title, {flex: 1}]}>
+          <Text style={styles.titleData}>Title</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[styles.textData, {flex: 1}]}>
               Reunião Gerencial - DTI
             </Text>
           </View>
-
+          <Text style={styles.titleData}>Members</Text>
           <FlatList
             data={members}
             keyExtractor={item => String(item.id)}
@@ -126,7 +119,7 @@ export default class detail extends Component {
             </View>
             <View style={{flex: 3}}>
               <Text style={styles.titleData}>Cost</Text>
-              <Text style={[styles.textData, {borderColor: '#ff0000'}]}>
+              <Text style={[styles.textCost, {borderColor: '#ff0000'}]}>
                 R$ 1.253,24
               </Text>
             </View>
@@ -145,20 +138,6 @@ const styles = StyleSheet.create({
   scrollview: {
     flex: 1,
   },
-
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingTop: metrics.baseMargin,
-    paddingLeft: 10,
-    paddingBottom: 10,
-    marginTop: 10,
-    margin: metrics.baseMargin,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#eee',
-    color: '#434343',
-  },
   member: {
     backgroundColor: '#eee',
     paddingLeft: 10,
@@ -171,15 +150,28 @@ const styles = StyleSheet.create({
   titleData: {
     marginLeft: 10,
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#019AE8',
+  },
+  textCost: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingTop: 4,
+    paddingLeft: 10,
+    paddingBottom: 2,
+    marginLeft: 10,
+    marginRight: 10,
+    borderWidth: 1,
+    backgroundColor: '#eee',
+    color: '#434343',
   },
   textData: {
     fontSize: 16,
     fontWeight: 'bold',
-    paddingTop: metrics.baseMargin,
+    paddingTop: 5,
     paddingLeft: 10,
-    paddingBottom: 10,
+    paddingBottom: 5,
     marginLeft: 10,
     marginRight: 10,
     borderBottomWidth: 1,
