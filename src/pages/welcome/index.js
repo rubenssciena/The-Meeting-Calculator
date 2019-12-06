@@ -146,17 +146,6 @@ export default class welcome extends Component {
     />
   );
 
-  // renderList = ({ item }) => (
-  //   <History
-  //     key={item.id}
-  //     id={item.id.toString()}
-  //     date={item.date}
-  //     title={item.title}
-  //     duration={item.duration}
-  //     cost={item.cost}
-  //   />
-  // );
-
   loadMeetings = () => {
     this.setState({refreshing: true});
     this.setState({lastMettings: this.state.lastMettings});
