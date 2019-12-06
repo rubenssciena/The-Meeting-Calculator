@@ -144,10 +144,10 @@ export default class meeting extends Component {
         </View>
         <View>
           <View style={{flexDirection: 'row'}}>
-            <View style={{flex: 2}}>
+            {/* <View style={{flex: 2}}>
               <Text style={styles.titleData}>Start</Text>
               <Text style={styles.textData}>06/08/2019 --:--</Text>
-            </View>
+            </View> */}
             <View style={styles.containerButtons}>
               <TouchableOpacity
                 disabled={this.state.playing}
